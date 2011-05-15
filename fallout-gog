@@ -1,0 +1,27 @@
+#!/bin/bash
+if [ "$PLAYONLINUX" = "" ]; then
+    exit 0
+fi
+source "$PLAYONLINUX/lib/sources"
+ 
+POL_SetupWindow_Init
+POL_SetupWindow_presentation "Fallout" "Black Isle Studios" "http://fallout.bethsoft.com/" "Matt Caron" "Fallout"
+ 
+ 
+select_prefix "$REPERTOIRE/wineprefix/Fallout/"
+POL_SetupWindow_prefixcreate
+cd $HOME
+POL_SetupWindow_browse "Plese select the location of the install file" "Select file"
+
+POL_SetupWindow_wait_next_signal "Installing Fallout..." "Fallout"
+wine $APP_ANSWER
+ 
+POL_SetupWindow_detect_exit
+ 
+POL_SetupWindow_reboot
+ 
+ 
+POL_SetupWindow_make_shortcut "Fallout" "Program Files/GOG.com/Fallout/" "falloutw.exe" "" "Fallout"
+ 
+POL_SetupWindow_Close
+exit
