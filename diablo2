@@ -63,10 +63,3 @@ POL_SetupWindow_message "$(eval_gettext '$TITLE has been installed successfully.
 
 POL_SetupWindow_Close
 exit
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEABECAAYFAlBB1hcACgkQ5TH6yaoTykeS6ACfWwJDUAO0SdYuV2yjbEsNiOox
-PmsAnipw1wZ5uDWNPPDL97qwmz5OfqcC
-=UuZA
------END PGP SIGNATURE-----
