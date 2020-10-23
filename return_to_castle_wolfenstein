@@ -1,0 +1,56 @@
+#!/bin/bash
+
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources" 
+
+## 
+TITLE="Return To Castle Wolfenstein"
+PREFIX="RTCW"
+WINEVERSION="1.5.29"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+POL_SetupWindow_presentation "$TITLE" "id" "www.idsoftware.com/games/wolfenstein" "Matt Caron" "$PREFIX" 
+
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WINEVERSION"
+
+if [ "$POL_SELECTED_FILE" ]; then
+	SetupFile="$POL_SELECTED_FILE"
+	POL_SetupWindow_wait "$(eval_gettext 'Installing $TITLE')" "$TITLE"
+	POL_Wine start /unix "$SetupFile"
+else
+	POL_SetupWindow_InstallMethod "CD,LOCAL"
+	
+	if [ "$INSTALL_METHOD" = "CD" ]; then
+
+
+		POL_Call POL_Wine_InstallCDROM "1" "w" "Setup.exe"
+		POL_Wine_WaitBefore "$TITLE"
+
+		POL_Wine start /unix "$CDROM_SETUP"
+
+		POL_Call POL_Wine_InstallCDROM "2" "w" "Launch.exe"
+
+		POL_Wine_WaitExit "$TITLE"
+	
+	fi
+
+	if [ "$INSTALL_METHOD" = "LOCAL" ]; then 
+		cd "$HOME"
+		POL_SetupWindow_browse "$(eval_gettext 'Please select the setup file to run:')" "$TITLE"
+		SetupFile="$APP_ANSWER"
+		POL_SetupWindow_wait "$(eval_gettext 'Installing $TITLE')" "$TITLE"
+		POL_Wine start /unix "$SetupFile"
+	fi
+fi
+
+POL_Wine_WaitExit
+
+POL_Shortcut "wolf.exe" "$TITLE"
+POL_Shortcut_QuietDebug "$TITLE"
+
+POL_SetupWindow_message "$(eval_gettext '$TITLE has been installed successfully.')" "$TITLE"
+
+POL_SetupWindow_Close
+exit
